@@ -9,7 +9,8 @@ public class RunnerController : MonoBehaviour
     private InputAction run;
     private InputActionMap map;
     [SerializeField] Rigidbody2D rb;
-    private bool _isRunning;
+    private bool _isHoldingRunKey;
+    private float _currentSpeed=1;
     
     private void Awake()
     {
@@ -25,36 +26,40 @@ public class RunnerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (_isHoldingRunKey)
+        {
+            _currentSpeed += Time.deltaTime;
+        }
     }
     private void OnEnable()
     {
         map.Enable();
-        run.performed += StartRunning;
-        run.canceled += StopRunning;
+        run.performed += StartHoldingRunKey;
+        run.canceled += StopHoldingRunKey;
         
     }
     private void OnDisable()
     {
         map.Disable();
-        run.performed -= StartRunning;
-        run.canceled -= StopRunning;
+        run.performed -= StartHoldingRunKey;
+        run.canceled -= StopHoldingRunKey;
 
     }
-    void StartRunning(InputAction.CallbackContext ct)
+    void StartHoldingRunKey(InputAction.CallbackContext ct)
     {
-        _isRunning = true;
+        _isHoldingRunKey = true;
     }
-    void StopRunning(InputAction.CallbackContext ct)
+    void StopHoldingRunKey(InputAction.CallbackContext ct)
     {
-        _isRunning = false;
+        _isHoldingRunKey = false;
     }
+
     private void FixedUpdate()
     {
-        if (_isRunning)
+        if (_isHoldingRunKey)
         {
             Debug.Log("move runner clled");
-            rb.MovePosition(rb.position + (Vector2.right * Time.deltaTime * 10));
+            rb.MovePosition(rb.position + (Vector2.right * _currentSpeed*Time.deltaTime));
         }
     }
 
