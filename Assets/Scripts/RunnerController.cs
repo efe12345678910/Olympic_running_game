@@ -16,6 +16,7 @@ public class RunnerController : MonoBehaviour
     private float _thresholdSpeed = 20;
     private float _maxSpeed = 35;
     private float _maxAnimSpeed = 6;
+    private bool _hasStartedRunning = false;
     private void Awake()
     {
         map = new InputActionMap("playerControls");
@@ -32,7 +33,7 @@ public class RunnerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_isHoldingRunKey)
+        if (_isHoldingRunKey&&_hasStartedRunning)
         {
             if (_currentSpeed < _maxSpeed)
             {
@@ -79,6 +80,11 @@ public class RunnerController : MonoBehaviour
     void StartHoldingRunKey(InputAction.CallbackContext ct)
     {
         _isHoldingRunKey = true;
+        if (!_hasStartedRunning)
+        {
+            _hasStartedRunning = true;
+            animator.SetTrigger("start_running");
+        }
     }
     void StopHoldingRunKey(InputAction.CallbackContext ct)
     {
@@ -87,9 +93,8 @@ public class RunnerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_isHoldingRunKey)
+        if (_hasStartedRunning)
         {
-            Debug.Log("move runner clled");
             rb.MovePosition(rb.position + (Vector2.right * _currentSpeed * Time.deltaTime * 3));
         }
     }
