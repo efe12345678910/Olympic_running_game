@@ -17,12 +17,10 @@ public class RunnerAudioManager : MonoBehaviour
     }
     IEnumerator  Play2RunningAudioWithIntervals(float interval)
     {
-        Debug.Log($"Corot => {Time.time}");
         _audioSource.PlayOneShot(SceneAudioBank.Instance.RunnerSounds[0].AudioClip);
         yield return new WaitForSeconds(interval);
         _audioSource.PlayOneShot(SceneAudioBank.Instance.RunnerSounds[1].AudioClip);
         yield return new WaitForSeconds(interval);
         _runningSoundCycleInProgress=false;
-        Debug.Log($"Corot2 => {Time.time}");
     }
 }
