@@ -17,12 +17,16 @@ public class RunnerController : MonoBehaviour
     private float _maxSpeed = 35;
     private float _maxAnimSpeed = 6;
     private bool _hasStartedRunning = false;
+    private float _runningSoundInterval = 0.2f;
+    private float _runTimer = 0;
+    [SerializeField] RunnerAudioManager _runnerAudio;
     private void Awake()
     {
         map = new InputActionMap("playerControls");
         run = map.AddAction("runAction", binding: "<Keyboard>/space");
         animator = GetComponent<Animator>();
         _currentSpeed = _startingSpeed;
+        _runnerAudio = GetComponent<RunnerAudioManager>();
     }
     // Start is called before the first frame update
     void Start()
@@ -33,6 +37,10 @@ public class RunnerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (_hasStartedRunning)
+        {
+            _runnerAudio.Play2RunningAudioWithIntervalsVoid(5/_currentSpeed);
+        }
         if (_isHoldingRunKey&&_hasStartedRunning)
         {
             if (_currentSpeed < _maxSpeed)
