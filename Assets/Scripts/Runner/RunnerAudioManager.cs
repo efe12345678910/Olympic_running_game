@@ -6,6 +6,7 @@ public class RunnerAudioManager : MonoBehaviour
 {
     [SerializeField] private AudioSource _audioSource;
     private bool _runningSoundCycleInProgress =false;
+    [SerializeField] private AudioClip[] _audioClips = new AudioClip[2];
     
     public void Play2RunningAudioWithIntervalsVoid(float interval)
     {
@@ -17,9 +18,9 @@ public class RunnerAudioManager : MonoBehaviour
     }
     IEnumerator  Play2RunningAudioWithIntervals(float interval)
     {
-        _audioSource.PlayOneShot(SceneAudioBank.Instance.RunnerSounds[0].AudioClip);
+        _audioSource.PlayOneShot(_audioClips[0]);
         yield return new WaitForSeconds(interval);
-        _audioSource.PlayOneShot(SceneAudioBank.Instance.RunnerSounds[1].AudioClip);
+        _audioSource.PlayOneShot(_audioClips[1]);
         yield return new WaitForSeconds(interval);
         _runningSoundCycleInProgress=false;
     }
