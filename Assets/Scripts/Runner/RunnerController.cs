@@ -11,6 +11,21 @@ public class RunnerController : MonoBehaviour
     [SerializeField] Rigidbody2D rb;
     private bool _isHoldingRunKey;
     private float _currentSpeed;
+    private float _currentStamina;
+    public float CurrentStamina { get { return _currentStamina; } private set 
+        {
+            if (value >= 0)
+            {
+                _currentStamina = value;
+            }
+            else
+            {
+                _currentStamina = 0;
+            }
+
+        } 
+    }
+    public float MaxStamina { get; private set; } = 10000;
     public float CurrentSpeed
     {
         get
@@ -22,7 +37,7 @@ public class RunnerController : MonoBehaviour
             //going faster
             if (_currentSpeed < value)
             {
-                if (value < _maxSpeed)
+                if (value < MaxSpeed)
                 {
                     _currentSpeed = value;
                     ChangeAnimationSpeed();
@@ -31,7 +46,7 @@ public class RunnerController : MonoBehaviour
             //slowing down
             else
             {
-                if (value > _startingSpeed)
+                if (value > StartingSpeed)
                 {
                     _currentSpeed = value;
                     ChangeAnimationSpeed();
@@ -44,11 +59,10 @@ public class RunnerController : MonoBehaviour
         }
     }
 
-    private float _startingSpeed = 10;
+    public float StartingSpeed { get; private set; } = 10;
     private Animator animator;
     private float _thresholdSpeed = 20;
-    private float _maxSpeed = 35;
-    private float _maxAnimSpeed = 6;
+    public float MaxSpeed { get; private set; } = 35;
     private bool _hasStartedRunning = false;
     private float _slowDownAmountWhenNotPressingRunKey = 10f;
     [SerializeField] RunnerAudioManager _runnerAudio;
@@ -57,8 +71,9 @@ public class RunnerController : MonoBehaviour
         map = new InputActionMap("playerControls");
         run = map.AddAction("runAction", binding: "<Keyboard>/space");
         animator = GetComponent<Animator>();
-        CurrentSpeed = _startingSpeed;
+        CurrentSpeed = StartingSpeed;
         _runnerAudio = GetComponent<RunnerAudioManager>();
+        CurrentStamina = MaxStamina;
     }
     // Start is called before the first frame update
     void Start()
@@ -73,6 +88,7 @@ public class RunnerController : MonoBehaviour
         ChangePace();
         ChangeAnimationSpeed();
         PlayRunningAudio();
+        DecreaseStamina();
     }
     private void OnEnable()
     {
@@ -95,15 +111,22 @@ public class RunnerController : MonoBehaviour
             _runnerAudio.Play2RunningAudioWithIntervalsVoid(5 / CurrentSpeed);
         }
     }
+    /// <summary>
+    /// Note: We do not require to use Time.deltaTime for this one because _currentSpeed value already takes Time.deltaTime into account.
+    /// </summary>
     void ChangeAnimationSpeed()
     {
-        animator.speed = 1 + (_currentSpeed - _startingSpeed) / 5;
+        animator.speed = 1 + (_currentSpeed - StartingSpeed) / 5;
+    }
+    void DecreaseStamina()
+    {
+        CurrentStamina -= Mathf.Pow(_currentSpeed,2)*Time.deltaTime;
     }
     void ChangePace()
     {
         if (_hasStartedRunning)
         {
-            if (_isHoldingRunKey)
+            if (_isHoldingRunKey&&CurrentStamina!=0)
             {
                 
                 if (CurrentSpeed < _thresholdSpeed)
