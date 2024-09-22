@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,9 +7,18 @@ public class Lamp : MonoBehaviour
 {
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] GameObject[] countdownLamps = new GameObject[3];
+    private LampAudioManager _lampAudioManager;
+    private bool _hasCountdownBeenInterrupted = false;
+    public Action RaceHasStarted;
+    private void CountdownHasBeenInterrupted()
+    {
+        _hasCountdownBeenInterrupted = true;
+    }
+    public bool IsCountDownInProgress { get; private set; } = false;
     private void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
+        _lampAudioManager = GetComponent<LampAudioManager>();
     }
     public void StartCountDown()
     {
@@ -16,6 +26,13 @@ public class Lamp : MonoBehaviour
     }
     IEnumerator CountDown()
     {
+        foreach (var item in countdownLamps)
+        {
+            item.SetActive(false);
+        }
+        _lampAudioManager.PlayLampSound(0);
+        IsCountDownInProgress = true;
+        yield return new WaitForSeconds(1f);
         for (int i = 0; i < countdownLamps.Length; i++)
         {
             foreach (var item in countdownLamps)
@@ -23,11 +40,35 @@ public class Lamp : MonoBehaviour
                 item.SetActive(false);
             }
             countdownLamps[i].SetActive(true);
-            yield return new WaitForSeconds(2);
+            if (i < 2)
+            {
+                _lampAudioManager.PlayLampSound(1);
+                yield return new WaitForSeconds(2);
+            }
+            else
+            {
+                _lampAudioManager.PlayLampSound(2);
+                IsCountDownInProgress=false;
+            }
+            
+            
         }
         foreach (var item in countdownLamps)
         {
             item.SetActive(false);
         }
+        if (!_hasCountdownBeenInterrupted)
+        {
+            if (RaceHasStarted != null)
+            {
+                RaceHasStarted.Invoke();
+            }
+        }
+        else if (_hasCountdownBeenInterrupted)
+        {
+
+        }
+        
+        
     }
 }

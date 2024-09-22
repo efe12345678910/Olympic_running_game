@@ -4,14 +4,19 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class RunnerController : MonoBehaviour
+public class Runner : MonoBehaviour
 {
+    [SerializeField] private int _runnerNO;
     private InputAction run;
     private InputActionMap map;
     [SerializeField] Rigidbody2D rb;
     private bool _isHoldingRunKey;
     private float _currentSpeed;
     private float _currentStamina;
+    private float _runnerRaceStartTime;
+    private float _runnerRaceEndTime;
+    private int _foulCount = 0;
+    public RunnerStatsInfo RunnerStatsInfo { get; private set; }
     public float CurrentStamina { get { return _currentStamina; } private set 
         {
             if (value >= 0)
@@ -71,9 +76,10 @@ public class RunnerController : MonoBehaviour
         map = new InputActionMap("playerControls");
         run = map.AddAction("runAction", binding: "<Keyboard>/space");
         animator = GetComponent<Animator>();
-        CurrentSpeed = StartingSpeed;
         _runnerAudio = GetComponent<RunnerAudioManager>();
         CurrentStamina = MaxStamina;
+        RunnerStatsInfo = new RunnerStatsInfo();
+        UIManager.Instance.SetRunnerStatRef(RunnerStatsInfo,_runnerNO);
     }
     // Start is called before the first frame update
     void Start()
@@ -84,11 +90,19 @@ public class RunnerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log($"speed => {CurrentSpeed} , anim speed => {animator.speed}");
-        ChangePace();
-        ChangeAnimationSpeed();
-        PlayRunningAudio();
-        DecreaseStamina();
+        //Debug.Log($"speed => {CurrentSpeed} , anim speed => {animator.speed}");
+        if (GameManager.Instance.IsRaceInProgress)
+        {
+            UpdateRealtimeRunnerStats();
+            RunnerStatsInfo.CalculateAndSetDistanceTraveled(gameObject.transform.position.x);
+            if (_hasStartedRunning)
+            {
+                ChangePace();
+                ChangeAnimationSpeed();
+                PlayRunningAudio();
+                DecreaseStamina();
+            }
+        }
     }
     private void OnEnable()
     {
@@ -124,8 +138,6 @@ public class RunnerController : MonoBehaviour
     }
     void ChangePace()
     {
-        if (_hasStartedRunning)
-        {
             if (_isHoldingRunKey&&CurrentStamina!=0)
             {
                 
@@ -143,15 +155,20 @@ public class RunnerController : MonoBehaviour
             {
                 CurrentSpeed -= _slowDownAmountWhenNotPressingRunKey * Time.deltaTime;
             }
-        }
-        
     }
     void StartHoldingRunKey(InputAction.CallbackContext ct)
     {
-        _isHoldingRunKey = true;
-        if (!_hasStartedRunning)
+        if (!GameManager.Instance.IsRaceInProgress)
         {
+            CommitFoul();
+            animator.SetTrigger("start_running");
+        }
+        _isHoldingRunKey = true;
+        if (!_hasStartedRunning&&GameManager.Instance.IsRaceInProgress)
+        {
+            CurrentSpeed = StartingSpeed;
             _hasStartedRunning = true;
+            _runnerRaceStartTime = Time.time;
             animator.SetTrigger("start_running");
         }
     }
@@ -167,6 +184,34 @@ public class RunnerController : MonoBehaviour
             rb.MovePosition(rb.position + (Vector2.right * CurrentSpeed * Time.deltaTime * 3));
         }
     }
+    //These are the stats that are displayed in the HUD
+    private void UpdateRealtimeRunnerStats()
+    {
+        RunnerStatsInfo.Speed = _currentSpeed;
+        RunnerStatsInfo.Time = Time.time-_runnerRaceStartTime;
+
+    }
+    private void CommitFoul()
+    {
+        if (!GameManager.Instance.IsRestartingTheRace)
+        {
+            animator.SetBool("not_fouled", false);
+            GameManager.Instance.RunnerMadeAFoul();
+            if (_foulCount < 3)
+            {
+                _foulCount++;
+                RunnerStatsInfo.Fauls = _foulCount;
+                Debug.Log("Foul committed");
+            }
+            else
+            {
+                RunnerStatsInfo.Fauls = _foulCount;
+                _foulCount++;
+                Debug.Log("GAME OVER! (too many fouls");
+            }
+        }
+    }
+
 
 
 }

@@ -44,3 +44,6 @@ TagManager:
   - name: Runner_1
     uniqueID: 3649927109
     locked: 0
+  - name: start_lamp
+    uniqueID: 790571741
+    locked: 0
