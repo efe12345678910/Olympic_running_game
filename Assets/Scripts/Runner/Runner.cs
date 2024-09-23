@@ -15,7 +15,6 @@ public class Runner : MonoBehaviour
     private float _currentStamina;
     private float _runnerRaceStartTime;
     private float _runnerRaceEndTime;
-    private int _foulCount = 0;
     public RunnerStatsInfo RunnerStatsInfo { get; private set; }
     public float CurrentStamina { get { return _currentStamina; } private set 
         {
@@ -78,7 +77,7 @@ public class Runner : MonoBehaviour
         animator = GetComponent<Animator>();
         _runnerAudio = GetComponent<RunnerAudioManager>();
         CurrentStamina = MaxStamina;
-        RunnerStatsInfo = new RunnerStatsInfo();
+        RunnerStatsInfo = new RunnerStatsInfo(_runnerNO);
         UIManager.Instance.SetRunnerStatRef(RunnerStatsInfo,_runnerNO);
     }
     // Start is called before the first frame update
@@ -197,16 +196,13 @@ public class Runner : MonoBehaviour
         {
             animator.SetBool("not_fouled", false);
             GameManager.Instance.RunnerMadeAFoul();
-            if (_foulCount < 3)
+            if (Data.GetFoulCount(_runnerNO) < 2)
             {
-                _foulCount++;
-                RunnerStatsInfo.Fauls = _foulCount;
-                Debug.Log("Foul committed");
+                Data.AddFouls(_runnerNO);
             }
             else
             {
-                RunnerStatsInfo.Fauls = _foulCount;
-                _foulCount++;
+                Data.AddFouls(_runnerNO);
                 Debug.Log("GAME OVER! (too many fouls");
             }
         }

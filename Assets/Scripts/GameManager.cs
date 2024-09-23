@@ -28,6 +28,10 @@ public class GameManager : MonoBehaviour
     {
         _instance = this;
     }
+    private void Start()
+    {
+        StartCountDown();
+    }
     public void StartCountDown()
     {
         lamp.StartCountDown();
@@ -54,6 +58,7 @@ public class GameManager : MonoBehaviour
     }
     public void RunnerMadeAFoul()
     {
+        lamp.CountdownHasBeenInterrupted();
         StartCoroutine(RestartRace());
     }
     private IEnumerator RestartRace()
@@ -61,6 +66,17 @@ public class GameManager : MonoBehaviour
         IsRestartingTheRace = true;
         yield return new WaitForSeconds(3);
         SceneManager.LoadScene(1);
+    }
+    public void RaceHasEnded(int runnerNo)
+    {
+        if (runnerNo == 1)
+        {
+
+        }
+        else if (runnerNo == 2)
+        {
+
+        }
     }
     private void Update()
     {

@@ -12,10 +12,7 @@ public class LampAudioManager : MonoBehaviour
     }
     public void PlayLampSound(int soundIndex)
     {
-        if (soundIndex < 3)
-        {
             _audioSource.PlayOneShot(_audioClips[soundIndex]);
-        }
     }
     
 }

@@ -60,7 +60,7 @@ public class RunnerAI : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         _runnerAudio = GetComponent<RunnerAudioManager>();
-        RunnerStatsInfo = new RunnerStatsInfo();
+        RunnerStatsInfo = new RunnerStatsInfo(_runnerNO);
         UIManager.Instance.SetRunnerStatRef(RunnerStatsInfo,_runnerNO);
     }
     // Start is called before the first frame update
@@ -165,12 +165,10 @@ public class RunnerAI : MonoBehaviour
         if (_foulCount < 3)
         {
             _foulCount++;
-            RunnerStatsInfo.Fauls = _foulCount;
             Debug.Log("Foul committed");
         }
         else
         {
-            RunnerStatsInfo.Fauls = _foulCount;
             _foulCount++;
             Debug.Log("GAME OVER! (too many fouls");
         }

@@ -10,9 +10,10 @@ public class Lamp : MonoBehaviour
     private LampAudioManager _lampAudioManager;
     private bool _hasCountdownBeenInterrupted = false;
     public Action RaceHasStarted;
-    private void CountdownHasBeenInterrupted()
+    public void CountdownHasBeenInterrupted()
     {
         _hasCountdownBeenInterrupted = true;
+        _lampAudioManager.PlayLampSound(3);
     }
     public bool IsCountDownInProgress { get; private set; } = false;
     private void Awake()
@@ -42,16 +43,22 @@ public class Lamp : MonoBehaviour
             countdownLamps[i].SetActive(true);
             if (i < 2)
             {
+                if (_hasCountdownBeenInterrupted)
+                {
+                    break;
+                }
                 _lampAudioManager.PlayLampSound(1);
                 yield return new WaitForSeconds(2);
             }
             else
             {
+                if (_hasCountdownBeenInterrupted)
+                {
+                    break;
+                }
                 _lampAudioManager.PlayLampSound(2);
-                IsCountDownInProgress=false;
+                IsCountDownInProgress =false;
             }
-            
-            
         }
         foreach (var item in countdownLamps)
         {

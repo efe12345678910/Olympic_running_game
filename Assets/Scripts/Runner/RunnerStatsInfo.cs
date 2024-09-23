@@ -5,6 +5,11 @@ using UnityEngine;
 using UnityEngine.UIElements;
 public class RunnerStatsInfo
 {
+    public RunnerStatsInfo(int runnerID)
+    {
+        RunnerID = runnerID;
+    }
+    public int RunnerID { get; private set; }
     private float _speed;
     public float Speed
     {
@@ -23,7 +28,6 @@ public class RunnerStatsInfo
     }
     public float MaxSpeed { get; private set; } 
     public float DistanceTraveled { get; private set; }
-    public int Fauls { get; set; } = 0;
     public float Time { get; set; }
     public void CalculateAndSetDistanceTraveled(float xPositionRunner)
     {
@@ -36,6 +40,7 @@ public class RunnerStatsInfo
             else
             {
                 DistanceTraveled = 500;
+                GameManager.Instance.RaceHasEnded(RunnerID);
             }
         }
     }
