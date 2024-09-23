@@ -13,8 +13,8 @@ public class Runner : MonoBehaviour
     private bool _isHoldingRunKey;
     private float _currentSpeed;
     private float _currentStamina;
-    private float _runnerRaceStartTime;
-    private float _runnerRaceEndTime;
+    private bool _hasRunnerFinished = false;
+    [SerializeField] GameObject _finPos;
     public RunnerStatsInfo RunnerStatsInfo { get; private set; }
     public float CurrentStamina { get { return _currentStamina; } private set 
         {
@@ -65,6 +65,7 @@ public class Runner : MonoBehaviour
 
     public float StartingSpeed { get; private set; } = 10;
     private Animator animator;
+    public Animator Animator { get { return animator; } }
     private float _thresholdSpeed = 20;
     public float MaxSpeed { get; private set; } = 35;
     private bool _hasStartedRunning = false;
@@ -96,10 +97,21 @@ public class Runner : MonoBehaviour
             RunnerStatsInfo.CalculateAndSetDistanceTraveled(gameObject.transform.position.x);
             if (_hasStartedRunning)
             {
-                ChangePace();
-                ChangeAnimationSpeed();
-                PlayRunningAudio();
-                DecreaseStamina();
+                if (gameObject.transform.position.x < _finPos.transform.position.x)
+                {
+                    ChangePace();
+                    ChangeAnimationSpeed();
+                    PlayRunningAudio();
+                    DecreaseStamina();
+                }
+                else
+                {
+                    gameObject.transform.position = new Vector2(_finPos.transform.position.x,gameObject.transform.position.y);
+                    animator.SetTrigger("has_finished");
+                    _hasRunnerFinished = true;
+                    GameManager.Instance.RunnerFinished(_runnerNO);
+                }
+
             }
         }
     }
@@ -167,7 +179,6 @@ public class Runner : MonoBehaviour
         {
             CurrentSpeed = StartingSpeed;
             _hasStartedRunning = true;
-            _runnerRaceStartTime = Time.time;
             animator.SetTrigger("start_running");
         }
     }
@@ -178,7 +189,7 @@ public class Runner : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_hasStartedRunning)
+        if (_hasStartedRunning&&GameManager.Instance.IsRaceInProgress)
         {
             rb.MovePosition(rb.position + (Vector2.right * CurrentSpeed * Time.deltaTime * 3));
         }
@@ -186,9 +197,11 @@ public class Runner : MonoBehaviour
     //These are the stats that are displayed in the HUD
     private void UpdateRealtimeRunnerStats()
     {
-        RunnerStatsInfo.Speed = _currentSpeed;
-        RunnerStatsInfo.Time = Time.time-_runnerRaceStartTime;
-
+        if (!_hasRunnerFinished)
+        {
+            RunnerStatsInfo.Speed = _currentSpeed;
+            RunnerStatsInfo.Time = Time.time - GameManager.Instance.RaceStartTime;
+        }
     }
     private void CommitFoul()
     {

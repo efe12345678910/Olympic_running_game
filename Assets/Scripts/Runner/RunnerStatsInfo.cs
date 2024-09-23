@@ -40,7 +40,6 @@ public class RunnerStatsInfo
             else
             {
                 DistanceTraveled = 500;
-                GameManager.Instance.RaceHasEnded(RunnerID);
             }
         }
     }

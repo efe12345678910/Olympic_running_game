@@ -3,14 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static Unity.Collections.Unicode;
 
 public class GameManager : MonoBehaviour
 {
     public bool IsRaceInProgress = false;
     public bool IsRaceOver = false;
+    public float RaceStartTime { get; private set; }
     public Action RaceHasStarted;
     public bool IsRestartingTheRace { get; private set; } = false;
     [SerializeField] private Lamp lamp;
+    [SerializeField] private Runner _runner1;
+    //_runner2 has type GameObject instead of Runner because it could be RunnerAI instead of Runner
+    [SerializeField] private GameObject _runner2;
+    private bool _runner1HasFinished = false;
+    private bool _runner2HasFinished = false;
+    private float _runner1Time = 0;
+    private float _runner2Time = 0;
 
     private static GameManager _instance;
     public static GameManager Instance
@@ -42,6 +51,7 @@ public class GameManager : MonoBehaviour
         if (RaceHasStarted != null)
         {
             RaceHasStarted.Invoke();
+            RaceStartTime = Time.time;
         }
     }
     private void OnEnable()
@@ -67,16 +77,67 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(3);
         SceneManager.LoadScene(1);
     }
-    public void RaceHasEnded(int runnerNo)
+    public void RunnerFinished(int runnerNo)
     {
         if (runnerNo == 1)
         {
-
+            _runner1HasFinished = true;
+            if (_runner2HasFinished)
+            {
+                FindOutTheVictor();
+            }
         }
         else if (runnerNo == 2)
         {
+            _runner2HasFinished = true;
+            if (_runner1HasFinished)
+            {
+                FindOutTheVictor();
+            }
+        }
+    }
+    public void FindOutTheVictor()
+    {
+        IsRaceInProgress = false;
+         _runner1Time = _runner1.RunnerStatsInfo.Time;
+        if (_runner2.TryGetComponent<RunnerAI>(out RunnerAI runnerAI))
+        {
+            _runner2Time = runnerAI.RunnerStatsInfo.Time;
+            if (_runner1Time < _runner2Time)
+            {
+                _runner1.Animator.SetTrigger("has_both_runners_finished");
+                _runner1.Animator.SetBool("has_won", true);
+                runnerAI.Animator.SetTrigger("has_both_runners_finished");
+                runnerAI.Animator.SetBool("has_won", false);
+            }
+            else
+            {
+                _runner1.Animator.SetTrigger("has_both_runners_finished");
+                _runner1.Animator.SetBool("has_won", false);
+                runnerAI.Animator.SetTrigger("has_both_runners_finished");
+                runnerAI.Animator.SetBool("has_won", true);
+            }
+        }
+        else if (_runner2.TryGetComponent<Runner>(out Runner runner))
+        {
+            _runner2Time = runner.RunnerStatsInfo.Time;
+            if (_runner1Time > _runner2Time)
+            {
+                _runner1.Animator.SetTrigger("has_both_runners_finished");
+                _runner1.Animator.SetBool("has_won", true);
+                runner.Animator.SetTrigger("has_both_runners_finished");
+                runner.Animator.SetBool("has_won", false);
+            }
+            else
+            {
+                _runner1.Animator.SetTrigger("has_both_runners_finished");
+                _runner1.Animator.SetBool("has_won", false);
+                runner.Animator.SetTrigger("has_both_runners_finished");
+                runner.Animator.SetBool("has_won", true);
+            }
 
         }
+        
     }
     private void Update()
     {

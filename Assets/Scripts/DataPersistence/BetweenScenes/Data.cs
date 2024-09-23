@@ -5,7 +5,8 @@ using UnityEngine;
 public static class Data
 {
     private static int _runner1FoulCount = 0;
-    public static int _runner2FoulCount  = 0;
+    private static int _runner2FoulCount  = 0;
+    
     public static void AddFouls(int runnerNo)
     {
         if (runnerNo == 1)
