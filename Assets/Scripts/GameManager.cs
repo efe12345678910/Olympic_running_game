@@ -51,8 +51,9 @@ public class GameManager : MonoBehaviour
         if (RaceHasStarted != null)
         {
             RaceHasStarted.Invoke();
-            RaceStartTime = Time.time;
+
         }
+        RaceStartTime = Time.time;
     }
     private void OnEnable()
     {
@@ -151,7 +152,6 @@ public class GameManager : MonoBehaviour
     }
     private void Update()
     {
-        
     }
     private IEnumerator GoToEndingScreen()
     {

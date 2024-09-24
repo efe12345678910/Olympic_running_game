@@ -75,7 +75,14 @@ public class Runner : MonoBehaviour
     private void Awake()
     {
         map = new InputActionMap("playerControls");
-        run = map.AddAction("runAction", binding: "<Keyboard>/space");
+        if (_runnerNO == 1)
+        {
+            run = map.AddAction("runAction", binding: "<Keyboard>/space");
+        }
+        else
+        {
+            run = map.AddAction("runAction", binding: "<Keyboard>/a");
+        }
         animator = GetComponent<Animator>();
         _runnerAudio = GetComponent<RunnerAudioManager>();
         CurrentStamina = MaxStamina;
@@ -91,6 +98,7 @@ public class Runner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         //Debug.Log($"speed => {CurrentSpeed} , anim speed => {animator.speed}");
         if (GameManager.Instance.IsRaceInProgress)
         {
