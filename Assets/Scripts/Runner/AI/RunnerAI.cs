@@ -53,7 +53,7 @@ public class RunnerAI : MonoBehaviour
     private Animator animator;
     public Animator Animator { get { return animator; } }
     private float _thresholdSpeed = 13;
-    public float MaxSpeed { get; private set; } = 18;
+    public float MaxSpeed { get; private set; } = 20;
     private bool _hasStartedRunning = false;
     private float _slowDownAmountWhenNotPressingRunKey = 10f;
     [SerializeField] RunnerAudioManager _runnerAudio;

@@ -31,8 +31,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] RectTransform _staminaGauge;
     [SerializeField] protected RunnerStatsInfo _runnerStats1;
     [SerializeField] protected RunnerStatsInfo _runnerStats2;
-    [SerializeField] TextMeshProUGUI _runner1Info;
-    [SerializeField] TextMeshProUGUI _runner2Info;
+    [SerializeField] protected TextMeshProUGUI _runner1Info;
+    [SerializeField] protected TextMeshProUGUI _runner2Info;
     private void Awake()
     {
         if (_instance == null)
@@ -87,11 +87,11 @@ public class UIManager : MonoBehaviour
     /// <summary>
     /// Updates Runner Data Information display on the HUD
     /// </summary>
-    private void UpdateRunnerInfoDisplays()
+    protected virtual void UpdateRunnerInfoDisplays()
     {
-        _runner1Info.text = $"Speed : {Math.Round(_runnerStats1.Speed,2)}\nMax Speed : {Math.Round(_runnerStats1.MaxSpeed,2)}\n" +
-            $"Total Distance Traveled : {Math.Round(_runnerStats1.DistanceTraveled,2)} m\nFauls : {(Data.GetFoulCount(1))}\nTime : {Math.Round(_runnerStats1.Time,2)} sec";
-        _runner2Info.text = $"Speed : {Math.Round(_runnerStats2.Speed,2)}\nMax Speed : {Math.Round(_runnerStats2.MaxSpeed,2)}\n" +
-            $"Total Distance Traveled : {Math.Round(_runnerStats2.DistanceTraveled,2)} m\nFauls : {(Data.GetFoulCount(2))}\nTime : {Math.Round(_runnerStats2.Time, 2)} sec";
+        _runner1Info.text = $"Speed : {Math.Round(_runnerStats1.Speed, 2)}\nMax Speed : {Math.Round(_runnerStats1.MaxSpeed, 2)}\n" +
+            $"Total Distance Traveled : {Math.Round(_runnerStats1.DistanceTraveled, 2)} m\nFauls : {(Data.GetFoulCount(1))}\nTime : {Math.Round(_runnerStats1.Time, 2)} sec";
+        _runner2Info.text = $"Speed : ?\nMax Speed : ?\n" +
+            $"Total Distance Traveled : {Math.Round(_runnerStats2.DistanceTraveled, 2)} m\nFauls : {(Data.GetFoulCount(2))}\nTime : {Math.Round(_runnerStats2.Time, 2)} sec";
     }
 }
