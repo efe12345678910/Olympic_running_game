@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour
             _runner1HasFinished = true;
             if (_runner2HasFinished)
             {
-                FindOutTheVictor();
+                StartCoroutine(FindOutTheVictor());
             }
         }
         else if (runnerNo == 2)
@@ -92,12 +92,13 @@ public class GameManager : MonoBehaviour
             _runner2HasFinished = true;
             if (_runner1HasFinished)
             {
-                FindOutTheVictor();
+                StartCoroutine(FindOutTheVictor());
             }
         }
     }
-    public void FindOutTheVictor()
+    public IEnumerator FindOutTheVictor()
     {
+        yield return new WaitForSeconds(2);
         IsRaceInProgress = false;
          _runner1Time = _runner1.RunnerStatsInfo.Time;
         if (_runner2.TryGetComponent<RunnerAI>(out RunnerAI runnerAI))
@@ -105,17 +106,21 @@ public class GameManager : MonoBehaviour
             _runner2Time = runnerAI.RunnerStatsInfo.Time;
             if (_runner1Time < _runner2Time)
             {
+                //runner1 wins
                 _runner1.Animator.SetTrigger("has_both_runners_finished");
                 _runner1.Animator.SetBool("has_won", true);
                 runnerAI.Animator.SetTrigger("has_both_runners_finished");
                 runnerAI.Animator.SetBool("has_won", false);
+                Data.SetWinnerData(_runner1Time,1);
             }
             else
             {
+                //runner2 wins
                 _runner1.Animator.SetTrigger("has_both_runners_finished");
                 _runner1.Animator.SetBool("has_won", false);
                 runnerAI.Animator.SetTrigger("has_both_runners_finished");
                 runnerAI.Animator.SetBool("has_won", true);
+                Data.SetWinnerData(_runner2Time,2);
             }
         }
         else if (_runner2.TryGetComponent<Runner>(out Runner runner))
@@ -123,24 +128,34 @@ public class GameManager : MonoBehaviour
             _runner2Time = runner.RunnerStatsInfo.Time;
             if (_runner1Time > _runner2Time)
             {
+                //runner1 wins
                 _runner1.Animator.SetTrigger("has_both_runners_finished");
                 _runner1.Animator.SetBool("has_won", true);
                 runner.Animator.SetTrigger("has_both_runners_finished");
                 runner.Animator.SetBool("has_won", false);
+                Data.SetWinnerData(_runner1Time,1);
             }
             else
             {
+                //runner2 wins
                 _runner1.Animator.SetTrigger("has_both_runners_finished");
                 _runner1.Animator.SetBool("has_won", false);
                 runner.Animator.SetTrigger("has_both_runners_finished");
                 runner.Animator.SetBool("has_won", true);
+                Data.SetWinnerData(_runner2Time,2);
             }
 
         }
-        
+       
+        StartCoroutine(GoToEndingScreen());
     }
     private void Update()
     {
         
+    }
+    private IEnumerator GoToEndingScreen()
+    {
+        yield return new WaitForSeconds(4);
+        SceneManager.LoadScene(2);
     }
 }
