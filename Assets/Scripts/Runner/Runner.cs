@@ -22,10 +22,12 @@ public class Runner : MonoBehaviour
             if (value >= 0)
             {
                 _currentStamina = value;
+                RunnerStatsInfo.SetStamina(_currentStamina);
             }
             else
             {
                 _currentStamina = 0;
+                RunnerStatsInfo.SetStamina(_currentStamina);
             }
 
         } 
@@ -83,10 +85,10 @@ public class Runner : MonoBehaviour
         {
             run = map.AddAction("runAction", binding: "<Keyboard>/a");
         }
+        RunnerStatsInfo = new RunnerStatsInfo(_runnerNO);
         animator = GetComponent<Animator>();
         _runnerAudio = GetComponent<RunnerAudioManager>();
         CurrentStamina = MaxStamina;
-        RunnerStatsInfo = new RunnerStatsInfo(_runnerNO);
         UIManager.Instance.SetRunnerStatRef(RunnerStatsInfo,_runnerNO);
     }
     // Start is called before the first frame update

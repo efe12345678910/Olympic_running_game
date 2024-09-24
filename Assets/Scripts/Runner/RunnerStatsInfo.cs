@@ -5,9 +5,17 @@ using UnityEngine;
 using UnityEngine.UIElements;
 public class RunnerStatsInfo
 {
+    public float StartingSpeed { get; private set; } = 10;
+    public  float MaxSpeedPossible = 35;
     public RunnerStatsInfo(int runnerID)
     {
         RunnerID = runnerID;
+    }
+    public float MaxStamina = 10_000;
+    public float CurrentStamina { get; private set; }
+    public void SetStamina(float val)
+    {
+        CurrentStamina = val;
     }
     public int RunnerID { get; private set; }
     private float _speed;

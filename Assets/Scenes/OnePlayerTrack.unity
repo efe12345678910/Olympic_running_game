@@ -2867,8 +2867,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.028}
   m_AnchorMax: {x: 1, y: 0.97800004}
-  m_AnchoredPosition: {x: -0.7424011, y: -124.81244}
-  m_SizeDelta: {x: -18.8759, y: -249.6249}
+  m_AnchoredPosition: {x: -0.7424011, y: -154.79224}
+  m_SizeDelta: {x: -18.8759, y: -309.5845}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &668175127
 MonoBehaviour:
@@ -6288,10 +6288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 440263567010b9e468ba454f144c1c86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _runnerController: {fileID: 1163318824}
-  _speedBar: {fileID: 313472619}
   _speedGauge: {fileID: 668175126}
-  _staminaBar: {fileID: 1406904472}
   _staminaGauge: {fileID: 578689377}
   _runner1Info: {fileID: 650871724}
   _runner2Info: {fileID: 377040652}

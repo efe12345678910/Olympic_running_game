@@ -27,13 +27,10 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    [SerializeField] Runner _runnerController;
-    [SerializeField] GameObject _speedBar;
     [SerializeField] RectTransform _speedGauge;
-    [SerializeField] GameObject _staminaBar;
     [SerializeField] RectTransform _staminaGauge;
-    [SerializeField] private RunnerStatsInfo _runnerStats1;
-    [SerializeField] private RunnerStatsInfo _runnerStats2;
+    [SerializeField] protected RunnerStatsInfo _runnerStats1;
+    [SerializeField] protected RunnerStatsInfo _runnerStats2;
     [SerializeField] TextMeshProUGUI _runner1Info;
     [SerializeField] TextMeshProUGUI _runner2Info;
     private void Awake()
@@ -54,20 +51,21 @@ public class UIManager : MonoBehaviour
         UpdateSpeedBar();
         UpdateStaminaBar();
         UpdateRunnerInfoDisplays();
+        Debug.Log(_speedGauge.offsetMax);
     }
     /// <summary>
     /// This is a formula to adjust Speed Bar position to current speed value
     /// </summary>
-    void UpdateSpeedBar()
+    protected virtual void UpdateSpeedBar()
     {
-        _speedGauge.offsetMax = new Vector2(_speedGauge.offsetMax.x, (_runnerController.CurrentSpeed - _runnerController.MaxSpeed) * _runnerController.StartingSpeed);
+        _speedGauge.offsetMax = new Vector2(_speedGauge.offsetMax.x, (_runnerStats1.Speed - _runnerStats1.MaxSpeedPossible) * _runnerStats1.StartingSpeed);
     }
     /// <summary>
     /// This is a formula to adjust Stamina Bar position to current stamina value
     /// </summary>
-    void UpdateStaminaBar()
+    protected  virtual void UpdateStaminaBar()
     {
-        _staminaGauge.offsetMax = new Vector2(_staminaGauge.offsetMax.x, 310*(_runnerController.CurrentStamina / _runnerController.MaxStamina - 1));
+        _staminaGauge.offsetMax = new Vector2(_staminaGauge.offsetMax.x, 310*(_runnerStats1.CurrentStamina / _runnerStats1.MaxStamina - 1));
     }
     /// <summary>
     /// RunnerStatsInfo reference is passed through this method and stored in UIManager fields
