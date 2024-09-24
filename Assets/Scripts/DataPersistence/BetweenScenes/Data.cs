@@ -4,6 +4,8 @@ using UnityEngine;
 
 public static class Data
 {
+    public enum GameMode { OnePlayer,TwoPlayers} 
+    public static GameMode GameModeSelected { get; private set; } = GameMode.OnePlayer;
     private static int _runner1FoulCount = 0;
     private static int _runner2FoulCount  = 0;
     public static float WinningTime { get; private set; }
@@ -42,4 +44,9 @@ public static class Data
             Winner = "Player 2";
         }
     }
+    public static void SetGameMode(GameMode gm)
+    {
+        GameModeSelected = gm;
+    }
+    
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -131,7 +132,7 @@ public class Runner : MonoBehaviour
     }
     void PlayRunningAudio()
     {
-        if (_hasStartedRunning)
+        if (_hasStartedRunning && _runnerNO == 1)
         {
             _runnerAudio.Play2RunningAudioWithIntervalsVoid(5 / CurrentSpeed);
         }

@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour
     {
         IsRestartingTheRace = true;
         yield return new WaitForSeconds(3);
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     public void RunnerFinished(int runnerNo)
     {
@@ -156,6 +156,6 @@ public class GameManager : MonoBehaviour
     private IEnumerator GoToEndingScreen()
     {
         yield return new WaitForSeconds(4);
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene(SceneNames.Scenes.EndingScreen.ToString());
     }
 }

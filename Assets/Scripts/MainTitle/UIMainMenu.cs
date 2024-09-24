@@ -47,6 +47,12 @@ public class UIMainMenu : MonoBehaviour
     }
     public void Start1PlayerGame()
     {
-        SceneManager.LoadScene(1);
+        Data.SetGameMode(Data.GameMode.OnePlayer);
+        SceneManager.LoadScene(SceneNames.Scenes.OnePlayerTrack.ToString());
+    }
+    public void Start2PlayerGame()
+    {
+        Data.SetGameMode(Data.GameMode.TwoPlayers);
+        SceneManager.LoadScene(SceneNames.Scenes.TwoPlayerTrack.ToString());
     }
 }

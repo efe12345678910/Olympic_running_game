@@ -9,7 +9,7 @@ public class EndingMenu : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _scoreInfo;
     public void ReturnToTitle()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(SceneNames.Scenes.MainScreen.ToString());
     }
     private void Awake()
     {
