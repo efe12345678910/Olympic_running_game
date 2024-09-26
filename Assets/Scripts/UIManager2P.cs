@@ -10,12 +10,13 @@ public class UIManager2P : UIManager
     protected override void UpdateSpeedBar()
     {
         base.UpdateSpeedBar();
-        _speedGaugeP2.offsetMax = new Vector2(_speedGaugeP2.offsetMax.x, (_runnerStats2.Speed - _runnerStats2.MaxSpeedPossible) * _runnerStats2.StartingSpeed);
+        _speedGaugeP2.offsetMax = new Vector2(_speedGaugeP2.offsetMax.x, _fullGaugeHeight * ((_runnerStats2.Speed) / _runnerStats2.MaxSpeedPossible - 1));
+
     }
     protected override void UpdateStaminaBar()
     {
         base.UpdateStaminaBar();
-        _staminaGaugeP2.offsetMax = new Vector2(_staminaGaugeP2.offsetMax.x, 310 * (_runnerStats2.CurrentStamina / _runnerStats2.MaxStamina - 1));
+        _staminaGaugeP2.offsetMax = new Vector2(_staminaGaugeP2.offsetMax.x, _fullGaugeHeight * (_runnerStats2.CurrentStamina / _runnerStats2.MaxStamina - 1));
 
     }
     protected override void UpdateRunnerInfoDisplays()

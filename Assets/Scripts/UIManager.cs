@@ -26,9 +26,10 @@ public class UIManager : MonoBehaviour
 
         }
     }
-
+    [SerializeField] RectTransform _speedBar;
     [SerializeField] RectTransform _speedGauge;
     [SerializeField] RectTransform _staminaGauge;
+    protected float _fullGaugeHeight;
     [SerializeField] protected RunnerStatsInfo _runnerStats1;
     [SerializeField] protected RunnerStatsInfo _runnerStats2;
     [SerializeField] protected TextMeshProUGUI _runner1Info;
@@ -39,6 +40,7 @@ public class UIManager : MonoBehaviour
         {
             _instance = this;
         }
+        _fullGaugeHeight = _staminaGauge.rect.height;
     }
     // Start is called before the first frame update
     void Start()
@@ -57,14 +59,14 @@ public class UIManager : MonoBehaviour
     /// </summary>
     protected virtual void UpdateSpeedBar()
     {
-        _speedGauge.offsetMax = new Vector2(_speedGauge.offsetMax.x, (_runnerStats1.Speed - _runnerStats1.MaxSpeedPossible) * _runnerStats1.StartingSpeed);
+        _speedGauge.offsetMax = new Vector2(_speedGauge.offsetMax.x, _fullGaugeHeight * ((_runnerStats1.Speed) / _runnerStats1.MaxSpeedPossible-1));
     }
     /// <summary>
     /// This is a formula to adjust Stamina Bar position to current stamina value
     /// </summary>
     protected  virtual void UpdateStaminaBar()
     {
-        _staminaGauge.offsetMax = new Vector2(_staminaGauge.offsetMax.x, 310*(_runnerStats1.CurrentStamina / _runnerStats1.MaxStamina - 1));
+        _staminaGauge.offsetMax = new Vector2(_staminaGauge.offsetMax.x, _fullGaugeHeight *(_runnerStats1.CurrentStamina / _runnerStats1.MaxStamina - 1));
     }
     /// <summary>
     /// RunnerStatsInfo reference is passed through this method and stored in UIManager fields

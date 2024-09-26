@@ -181,7 +181,6 @@ public class RunnerAI : MonoBehaviour
         if (_foulCount < 3)
         {
             _foulCount++;
-            Debug.Log("Foul committed");
         }
         else
         {
