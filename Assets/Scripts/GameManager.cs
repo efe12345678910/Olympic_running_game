@@ -127,7 +127,7 @@ public class GameManager : MonoBehaviour
         else if (_runner2.TryGetComponent<Runner>(out Runner runner))
         {
             _runner2Time = runner.RunnerStatsInfo.Time;
-            if (_runner1Time > _runner2Time)
+            if (_runner1Time < _runner2Time)
             {
                 //runner1 wins
                 _runner1.Animator.SetTrigger("has_both_runners_finished");
