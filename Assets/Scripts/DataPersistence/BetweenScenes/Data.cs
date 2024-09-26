@@ -6,30 +6,38 @@ public static class Data
 {
     public enum GameMode { OnePlayer,TwoPlayers} 
     public static GameMode GameModeSelected { get; private set; } = GameMode.OnePlayer;
-    private static int _runner1FoulCount = 0;
-    private static int _runner2FoulCount  = 0;
+    public static int Runner1FoulCount { get; private set; } = 0;
+    public static int Runner2FoulCount { get; private set; } = 0;
     public static float WinningTime { get; private set; }
     public static string Winner;
+    public static int DisqualifiedPlayerNo { get; private set; }
+    public static void AddDisqualifiedPlayer(int no)
+    {
+        if (no == 1 || no == 2)
+        {
+            DisqualifiedPlayerNo = no;
+        }
+    }
     public static void AddFouls(int runnerNo)
     {
         if (runnerNo == 1)
         {
-            _runner1FoulCount++;
+            Runner1FoulCount++;
         }
         else
         {
-            _runner2FoulCount++;
+            Runner2FoulCount++;
         }
     }
     public static int GetFoulCount(int runnerNo)
     {
         if (runnerNo == 1)
         {
-            return _runner1FoulCount;
+            return Runner1FoulCount;
         }
         else
         {
-            return _runner2FoulCount;
+            return Runner2FoulCount;
         }
     }
     public static void SetWinnerData(float winningTime, int playerNo)
@@ -48,5 +56,10 @@ public static class Data
     {
         GameModeSelected = gm;
     }
-    
+    public static  void ResetData()
+    {
+        Runner1FoulCount = 0;
+        Runner2FoulCount = 0;
+        DisqualifiedPlayerNo = 0;
+    }
 }

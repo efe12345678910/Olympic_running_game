@@ -17,5 +17,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/EndingScreen.unity
     guid: 27d884137fc0ecd4d863e0916dd7ebd4
+  - enabled: 1
+    path: Assets/Scenes/DisqualificationScreen.unity
+    guid: a3d4b06d97cee0f47b3f26ed6d4b8894
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: e94236f95bb11be49bf76eec3e137897, type: 2}

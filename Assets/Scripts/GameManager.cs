@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public float RaceStartTime { get; private set; }
     public Action RaceHasStarted;
     public bool IsRestartingTheRace { get; private set; } = false;
+    public bool IsEndingTheRace { get; private set; } = false;
     [SerializeField] private Lamp lamp;
     [SerializeField] private Runner _runner1;
     //_runner2 has type GameObject instead of Runner because it could be RunnerAI instead of Runner
@@ -20,7 +21,6 @@ public class GameManager : MonoBehaviour
     private bool _runner2HasFinished = false;
     private float _runner1Time = 0;
     private float _runner2Time = 0;
-
     private static GameManager _instance;
     public static GameManager Instance
     {
@@ -67,11 +67,42 @@ public class GameManager : MonoBehaviour
     {
         return lamp.IsCountDownInProgress;
     }
-    public void RunnerMadeAFoul()
+    public void RunnerMadeAFoul(int runnerNo)
     {
         lamp.CountdownHasBeenInterrupted();
-        StartCoroutine(RestartRace());
+        if (Data.GetFoulCount(runnerNo) < 2)
+        {
+            Data.AddFouls(runnerNo);
+        }
+        else
+        {
+            Data.AddFouls(runnerNo);
+        }
+        if (!CheckForLossByFoul())
+        {
+            StartCoroutine(RestartRace());
+        }
+        else
+        {
+            StartCoroutine(GoToDisqualificationScreen());
+        }
     }
+    private bool CheckForLossByFoul()
+    {
+        if (Data.Runner1FoulCount >= 3)
+        {
+            Data.AddDisqualifiedPlayer(1);
+            return true;
+
+        }
+        else if (Data.Runner2FoulCount >= 3)
+        {
+            Data.AddDisqualifiedPlayer(2);
+            return true;
+        }
+        else return false;
+    }
+    
     private IEnumerator RestartRace()
     {
         IsRestartingTheRace = true;
@@ -157,5 +188,11 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(4);
         SceneManager.LoadScene(SceneNames.Scenes.EndingScreen.ToString());
+    }
+    private IEnumerator GoToDisqualificationScreen()
+    {
+        IsEndingTheRace = true;
+        yield return new WaitForSeconds(3);
+        SceneManager.LoadScene(SceneNames.Scenes.DisqualificationScreen.ToString());
     }
 }

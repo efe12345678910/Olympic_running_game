@@ -180,7 +180,7 @@ public class Runner : MonoBehaviour
     {
         if (!GameManager.Instance.IsRaceInProgress)
         {
-            CommitFoul();
+            CommitFoul(_runnerNO);
             animator.SetTrigger("start_running");
         }
         _isHoldingRunKey = true;
@@ -212,21 +212,13 @@ public class Runner : MonoBehaviour
             RunnerStatsInfo.Time = Time.time - GameManager.Instance.RaceStartTime;
         }
     }
-    private void CommitFoul()
+    private void CommitFoul(int runnerNo)
     {
-        if (!GameManager.Instance.IsRestartingTheRace)
+        if (!GameManager.Instance.IsRestartingTheRace&&!GameManager.Instance.IsEndingTheRace)
         {
             animator.SetBool("not_fouled", false);
-            GameManager.Instance.RunnerMadeAFoul();
-            if (Data.GetFoulCount(_runnerNO) < 2)
-            {
-                Data.AddFouls(_runnerNO);
-            }
-            else
-            {
-                Data.AddFouls(_runnerNO);
-                Debug.Log("GAME OVER! (too many fouls");
-            }
+            GameManager.Instance.RunnerMadeAFoul(runnerNo);
+            
         }
     }
 

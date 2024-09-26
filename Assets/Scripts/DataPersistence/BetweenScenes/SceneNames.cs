@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class SceneNames
 {
-   public enum Scenes { OnePlayerTrack, TwoPlayerTrack, MainScreen, EndingScreen }
+   public enum Scenes { OnePlayerTrack, TwoPlayerTrack, MainScreen, EndingScreen, DisqualificationScreen }
 }
