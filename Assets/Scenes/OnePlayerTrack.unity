@@ -1966,7 +1966,7 @@ MonoBehaviour:
 
     Total Distance Traveled:
 
-    Fauls:
+    Fouls:
 
     Time:'
   m_isRightToLeft: 0
@@ -2802,7 +2802,7 @@ MonoBehaviour:
 
     Total Distance Traveled:
 
-    Fauls:
+    Fouls:
 
     Time:'
   m_isRightToLeft: 0
@@ -6336,6 +6336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 440263567010b9e468ba454f144c1c86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _speedBar: {fileID: 0}
   _speedGauge: {fileID: 668175126}
   _staminaGauge: {fileID: 578689377}
   _runner1Info: {fileID: 650871724}
