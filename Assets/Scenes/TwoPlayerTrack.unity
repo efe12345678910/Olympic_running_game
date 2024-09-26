@@ -8962,7 +8962,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1890975015}
   - component: {fileID: 1890975014}
-  - component: {fileID: 1890975013}
   - component: {fileID: 1890975012}
   m_Layer: 0
   m_Name: P2_Camera
@@ -9005,14 +9004,6 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
---- !u!81 &1890975013
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1890975011}
-  m_Enabled: 1
 --- !u!20 &1890975014
 Camera:
   m_ObjectHideFlags: 0

@@ -51,7 +51,6 @@ public class UIManager : MonoBehaviour
         UpdateSpeedBar();
         UpdateStaminaBar();
         UpdateRunnerInfoDisplays();
-        Debug.Log(_speedGauge.offsetMax);
     }
     /// <summary>
     /// This is a formula to adjust Speed Bar position to current speed value

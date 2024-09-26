@@ -14,6 +14,9 @@ public class EndingMenu : MonoBehaviour
     }
     private void Awake()
     {
-        _scoreInfo.text = $"Winner: {Data.Winner}\nTime: {Math.Round(Data.WinningTime,2)}\n\nBest Time:";
+        _scoreInfo.text = $"Winner: {Data.Winner}\nTime: {Math.Round(Data.WinningTime,2)}";
+    }
+    private void Start()
+    {
     }
 }
