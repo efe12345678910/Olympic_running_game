@@ -59,10 +59,12 @@ public class RunnerAI : MonoBehaviour
     [SerializeField] RunnerAudioManager _runnerAudio;
     private void Awake()
     {
+        MaxSpeed = UnityEngine.Random.Range(18, 21);
         animator = GetComponent<Animator>();
         _runnerAudio = GetComponent<RunnerAudioManager>();
         RunnerStatsInfo = new RunnerStatsInfo(_runnerNO);
         UIManager.Instance.SetRunnerStatRef(RunnerStatsInfo,_runnerNO);
+        
     }
     // Start is called before the first frame update
     void Start()

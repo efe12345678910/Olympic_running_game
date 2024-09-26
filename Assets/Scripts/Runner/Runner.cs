@@ -100,7 +100,7 @@ public class Runner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        Debug.Log($"{_runnerNO} Stamina => {CurrentStamina}");
         //Debug.Log($"speed => {CurrentSpeed} , anim speed => {animator.speed}");
         if (GameManager.Instance.IsRaceInProgress)
         {
