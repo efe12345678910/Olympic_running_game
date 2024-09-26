@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
     public bool IsRaceOver = false;
     public float RaceStartTime { get; private set; }
     public Action RaceHasStarted;
+    //This event is to trigger audience SFX and VFX
+    public Action VictoryEvent;
     public bool IsRestartingTheRace { get; private set; } = false;
     public bool IsEndingTheRace { get; private set; } = false;
     [SerializeField] private Lamp lamp;
@@ -178,7 +180,10 @@ public class GameManager : MonoBehaviour
             }
 
         }
-       
+       if (VictoryEvent != null)
+        {
+            VictoryEvent.Invoke();
+        }
         StartCoroutine(GoToEndingScreen());
     }
     private void Update()
@@ -186,7 +191,7 @@ public class GameManager : MonoBehaviour
     }
     private IEnumerator GoToEndingScreen()
     {
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(8);
         SceneManager.LoadScene(SceneNames.Scenes.EndingScreen.ToString());
     }
     private IEnumerator GoToDisqualificationScreen()

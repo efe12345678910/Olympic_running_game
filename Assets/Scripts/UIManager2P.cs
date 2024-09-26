@@ -22,8 +22,8 @@ public class UIManager2P : UIManager
     protected override void UpdateRunnerInfoDisplays()
     {
         _runner1Info.text = $"Speed : {Math.Round(_runnerStats1.Speed, 2)}\nMax Speed : {Math.Round(_runnerStats1.MaxSpeed, 2)}\n" +
-            $"Total Distance Traveled : {Math.Round(_runnerStats1.DistanceTraveled, 2)} m\nFauls : {(Data.GetFoulCount(1))}\nTime : {Math.Round(_runnerStats1.Time, 2)} sec";
+            $"Total Distance Traveled : {Math.Round(_runnerStats1.DistanceTraveled, 2)} m\nFouls : {(Data.GetFoulCount(1))}/3\nTime : {Math.Round(_runnerStats1.Time, 2)} sec";
         _runner2Info.text = $"Speed : {Math.Round(_runnerStats2.Speed, 2)}\nMax Speed : {Math.Round(_runnerStats2.MaxSpeed, 2)}\n" +
-            $"Total Distance Traveled : {Math.Round(_runnerStats2.DistanceTraveled, 2)} m\nFauls : {(Data.GetFoulCount(2))}\nTime : {Math.Round(_runnerStats2.Time, 2)} sec";
+            $"Total Distance Traveled : {Math.Round(_runnerStats2.DistanceTraveled, 2)} m\nFouls : {(Data.GetFoulCount(2))}/3\nTime : {Math.Round(_runnerStats2.Time, 2)} sec";
     }
 }
